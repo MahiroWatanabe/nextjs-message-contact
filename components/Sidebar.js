@@ -1,7 +1,6 @@
 import { Avatar, Button, IconButton } from "@mui/material";
 import styled from "styled-components";
-import { Chat, SearchOutlined } from "@mui/icons-material";
-import { MoreVert } from "@mui/icons-material";
+import { Chat, SearchOutlined, MoreVert } from "@mui/icons-material";
 import EmailValidator from "email-validator";
 import { auth, db } from "@/firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
@@ -14,6 +13,7 @@ const Sidebar = () => {
     .collection("chats")
     .where("users", "array-contains", user.email);
   const [chatSnapshot] = useCollection(useChatRef);
+
   const createChat = () => {
     const input = prompt(
       "Please enter an email address for the user you wish to chat with"
@@ -37,10 +37,11 @@ const Sidebar = () => {
       (chat) =>
         chat.data().users.find((user) => user === recipientEmail)?.length > 0
     );
+
   return (
     <Container>
       <Header>
-        <UserAvatar onClick={() => auth.signOut()} />
+        <UserAvatar src={user.photoURL} onClick={() => auth.signOut()} />
         <IconsContainer>
           <IconButton>
             <Chat />
@@ -64,7 +65,21 @@ const Sidebar = () => {
 
 export default Sidebar;
 
-const Container = styled.div``;
+const Container = styled.div`
+  flex: 0.45;
+  border-right: 1px solid whitesmoke;
+  height: 100vh;
+  min-width: 300px;
+  max-width: 350px;
+  overflow-y: scroll;
+
+  ::-webkit-scrollbar {
+    display: none;
+  }
+
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+`;
 
 const SideBarButton = styled(Button)`
   width: 100%;

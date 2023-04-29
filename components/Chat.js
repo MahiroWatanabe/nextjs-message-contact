@@ -21,6 +21,7 @@ const Chat = ({ id, users }) => {
   const recipient = recipientSnapshot?.docs[0]?.data();
   // chat相手のメールアドレス取得
   const recepientEmail = getRecipientEmail(users, user);
+
   return (
     <Container onClick={enterChat}>
       {recipient ? (
