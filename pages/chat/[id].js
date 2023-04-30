@@ -24,9 +24,31 @@ const ChatPage = ({ chat, messages }) => {
 export default ChatPage;
 
 export async function getServerSideProps(context) {
+  const ref = db.collection("chats").doc(context.query.id);
+  const messagesRes = await ref
+    .collection("messages")
+    .orderBy("timestamp", "asc")
+    .get();
+
+  const messages = messagesRes.docs
+    .map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }))
+    .map((messages) => ({
+      ...messages,
+      timestamp: messages.timestamp.toDate().getTime(),
+    }));
+
+  const chatRes = await ref.get();
+  const chat = {
+    id: chatRes.id,
+    ...chatRes.data(),
+  };
+
   return {
     props: {
-      messages: messages,
+      messages: JSON.stringify(messages),
       chat: chat,
     },
   };
