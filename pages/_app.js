@@ -13,7 +13,7 @@ export default function App({ Component, pageProps }) {
 
   useEffect(() => {
     if (user) {
-      db.collection("user").doc(user.uid).set(
+      db.collection("users").doc(user.uid).set(
         {
           email: user.email,
           lastSeen: firebase.firestore.FieldValue.serverTimestamp(),
