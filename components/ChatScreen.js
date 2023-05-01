@@ -18,7 +18,6 @@ const ChatScreen = ({ chat, messages }) => {
       .collection("users")
       .where("email", "==", getRecipientEmail(chat.users, user))
   );
-
   const recipient = recipientSnapshot?.docs?.[0].data();
   const recipientEmail = getRecipientEmail(chat.users, user);
 
@@ -30,6 +29,21 @@ const ChatScreen = ({ chat, messages }) => {
         ) : (
           <Avatar>{recipientEmail[0]}</Avatar>
         )}
+        <HeaderInformation>
+          <h3>{recipientEmail}</h3>
+          {recipientSnapshot ? (
+            <p>
+              Last active:{" "}
+              {recipient?.lastSeen.toDate() ? (
+                <TimeAgo datetime={recipient?.lastSeen?.toDate()} />
+              ) : (
+                "Unavailable"
+              )}
+            </p>
+          ) : (
+            <p>Loading last active...</p>
+          )}
+        </HeaderInformation>
         <HeaderIcons>
           <IconButton>
             <AttachFile />
@@ -57,6 +71,19 @@ const Header = styled.div`
   height: 80px;
   align-items: center;
   border-bottom: 1px solid whitesmoke;
+`;
+
+const HeaderInformation = styled.div`
+  margin-left: 15px;
+  flex: 1;
+  > h3 {
+    margin-bottom: 3px;
+  }
+
+  > p {
+    font-size: 14px;
+    color: gray;
+  }
 `;
 
 const HeaderIcons = styled.div``;
