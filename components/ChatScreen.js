@@ -3,7 +3,13 @@ import { Avatar, IconButton } from "@mui/material";
 import { useRouter } from "next/router";
 import { useAuthState } from "react-firebase-hooks/auth";
 import styled from "styled-components";
-import { MoreVert, AttachFile, InsertEmoticon, Mic } from "@mui/icons-material";
+import {
+  MoreVert,
+  AttachFile,
+  InsertEmoticon,
+  Mic,
+  Margin,
+} from "@mui/icons-material";
 import { useCollection } from "react-firebase-hooks/firestore";
 import Message from "./Message";
 import { useRef, useState } from "react";
