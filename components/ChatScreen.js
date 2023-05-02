@@ -3,7 +3,7 @@ import { Avatar, IconButton } from "@mui/material";
 import { useRouter } from "next/router";
 import { useAuthState } from "react-firebase-hooks/auth";
 import styled from "styled-components";
-import { MoreVert, AttachFile } from "@mui/icons-material";
+import { MoreVert, AttachFile, InsertEmoticon, Mic } from "@mui/icons-material";
 import { useCollection } from "react-firebase-hooks/firestore";
 import Message from "./Message";
 import { useRef, useState } from "react";
@@ -54,6 +54,13 @@ const ChatScreen = ({ chat, messages }) => {
     }
   };
 
+  const scrollToBottom = () => {
+    endOfMessageRef.current.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
+  };
+
   const sendMessage = (e) => {
     e.preventDefault();
 
@@ -74,6 +81,7 @@ const ChatScreen = ({ chat, messages }) => {
     });
 
     setInput("");
+    scrollToBottom();
   };
 
   const recipient = recipientSnapshot?.docs?.[0].data();
@@ -116,10 +124,12 @@ const ChatScreen = ({ chat, messages }) => {
         <EndOfMessage ref={endOfMessageRef} />
       </MessageContainer>
       <InputContainer>
+        <InsertEmoticon />
         <Input value={input} onChange={(e) => setInput(e.target.value)} />
         <button hidden disabled={!input} type="submit" onClick={sendMessage}>
           Send Message
         </button>
+        <Mic />
       </InputContainer>
     </Container>
   );
