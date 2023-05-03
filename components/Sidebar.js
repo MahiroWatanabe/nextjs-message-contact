@@ -1,12 +1,19 @@
 import { Avatar, Button, IconButton } from "@mui/material";
 import styled from "styled-components";
-import { Chat, SearchOutlined, MoreVert } from "@mui/icons-material";
+import {
+  Chat,
+  SearchOutlined,
+  MoreVert,
+  GroupAdd,
+  Person,
+} from "@mui/icons-material";
 import EmailValidator from "email-validator";
 import { auth, db } from "@/firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useCollection } from "react-firebase-hooks/firestore";
 import ChatUser from "./Chat";
 import { useState } from "react";
+import GroupChat from "./GroupChat";
 
 const Sidebar = () => {
   const [user] = useAuthState(auth);
@@ -15,7 +22,15 @@ const Sidebar = () => {
   const useChatRef = db
     .collection("chats")
     .where("users", "array-contains", user.email);
+
+  const useGroupChatRef = db
+    .collection("room")
+    .where("users", "array-contains", user.email);
+
   const [chatSnapshot] = useCollection(useChatRef);
+  const [chatGroupSnapshot] = useCollection(useGroupChatRef);
+
+  console.log(chatGroupSnapshot?.docs.map((doc) => doc.data()));
 
   const createChat = () => {
     const input = prompt(
@@ -43,8 +58,9 @@ const Sidebar = () => {
 
   const createGroupChat = () => {
     const input = prompt("Please enter email addresses separated by commas");
+    const groupname = prompt("Please enter group name");
     const inputArray = input.split(",");
-    if (!input) return null;
+    if (!input || !groupname) return null;
     if (
       inputArray.every((input) => {
         return EmailValidator.validate(input) && input !== user.email;
@@ -52,7 +68,8 @@ const Sidebar = () => {
     ) {
       alert("All email addresses are valid.");
       db.collection("room").add({
-        users: inputArray,
+        groupname: groupname,
+        users: [...inputArray, user.email],
       });
     } else {
       alert("Please enter valid email addresses.");
@@ -80,15 +97,23 @@ const Sidebar = () => {
         Start a new chat
       </SideBarButton>
       <SideBarGroupButton onClick={() => setChangemode(!changemode)}>
+        <div style={{ paddingRight: "6px" }}>
+          {changemode ? <GroupAdd /> : <Person />}
+        </div>
         Change {changemode ? "group chat" : "private chat"}
       </SideBarGroupButton>
-      {changemode ? (
-        chatSnapshot?.docs.map((chat) => (
-          <ChatUser key={chat.id} id={chat.id} users={chat.data().users} />
-        ))
-      ) : (
-        <h1>hello</h1>
-      )}
+      {changemode
+        ? chatSnapshot?.docs.map((chat) => (
+            <ChatUser key={chat.id} id={chat.id} users={chat.data().users} />
+          ))
+        : chatGroupSnapshot?.docs.map((chat) => (
+            <GroupChat
+              key={chat.id}
+              id={chat.id}
+              name={chat.data().groupname}
+              users={chat.data().users}
+            />
+          ))}
     </Container>
   );
 };
@@ -127,6 +152,7 @@ const SideBarGroupButton = styled(Button)`
   width: 100%;
   /* &&&で優先度を上げる */
   &&& {
+    display: flex;
     border-top: 1px solid whitesmoke;
     border-bottom: 1px solid whitesmoke;
     :hover {
