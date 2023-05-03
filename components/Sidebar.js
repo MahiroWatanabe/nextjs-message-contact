@@ -30,8 +30,6 @@ const Sidebar = () => {
   const [chatSnapshot] = useCollection(useChatRef);
   const [chatGroupSnapshot] = useCollection(useGroupChatRef);
 
-  console.log(chatGroupSnapshot?.docs.map((doc) => doc.data()));
-
   const createChat = () => {
     const input = prompt(
       "Please enter an email address for the user you wish to chat with"
