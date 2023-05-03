@@ -6,9 +6,12 @@ import { auth, db } from "@/firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useCollection } from "react-firebase-hooks/firestore";
 import ChatUser from "./Chat";
+import { useState } from "react";
 
 const Sidebar = () => {
   const [user] = useAuthState(auth);
+  const [changemode, setChangemode] = useState(true);
+
   const useChatRef = db
     .collection("chats")
     .where("users", "array-contains", user.email);
@@ -38,6 +41,24 @@ const Sidebar = () => {
         chat.data().users.find((user) => user === recipientEmail)?.length > 0
     );
 
+  const createGroupChat = () => {
+    const input = prompt("Please enter email addresses separated by commas");
+    const inputArray = input.split(",");
+    if (!input) return null;
+    if (
+      inputArray.every((input) => {
+        return EmailValidator.validate(input) && input !== user.email;
+      })
+    ) {
+      alert("All email addresses are valid.");
+      db.collection("room").add({
+        users: inputArray,
+      });
+    } else {
+      alert("Please enter valid email addresses.");
+    }
+  };
+
   return (
     <Container>
       <Header>
@@ -55,10 +76,19 @@ const Sidebar = () => {
         <SearchOutlined />
         <SearchInput placeholder="Search in chats" />
       </Search>
-      <SideBarButton onClick={createChat}>Start a new chat</SideBarButton>
-      {chatSnapshot?.docs.map((chat) => (
-        <ChatUser key={chat.id} id={chat.id} users={chat.data().users} />
-      ))}
+      <SideBarButton onClick={changemode ? createChat : createGroupChat}>
+        Start a new chat
+      </SideBarButton>
+      <SideBarGroupButton onClick={() => setChangemode(!changemode)}>
+        Change {changemode ? "group chat" : "private chat"}
+      </SideBarGroupButton>
+      {changemode ? (
+        chatSnapshot?.docs.map((chat) => (
+          <ChatUser key={chat.id} id={chat.id} users={chat.data().users} />
+        ))
+      ) : (
+        <h1>hello</h1>
+      )}
     </Container>
   );
 };
@@ -87,6 +117,21 @@ const SideBarButton = styled(Button)`
   &&& {
     border-top: 1px solid whitesmoke;
     border-bottom: 1px solid whitesmoke;
+    :hover {
+      background-color: #d9d9d9;
+    }
+  }
+`;
+
+const SideBarGroupButton = styled(Button)`
+  width: 100%;
+  /* &&&で優先度を上げる */
+  &&& {
+    border-top: 1px solid whitesmoke;
+    border-bottom: 1px solid whitesmoke;
+    :hover {
+      background-color: #d9d9d9;
+    }
   }
 `;
 
