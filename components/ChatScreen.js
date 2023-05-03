@@ -125,10 +125,12 @@ const ChatScreen = ({ chat, messages }) => {
           </IconButton>
         </HeaderIcons>
       </Header>
+
       <MessageContainer>
         {showMessages()}
         <EndOfMessage ref={endOfMessageRef} />
       </MessageContainer>
+
       <InputContainer>
         <InsertEmoticon />
         <Input value={input} onChange={(e) => setInput(e.target.value)} />
