@@ -3,7 +3,7 @@ import { Avatar } from "@mui/material";
 import { useRouter } from "next/router";
 import styled from "styled-components";
 
-const GroupChat = ({ id, name, users }) => {
+const GroupChat = ({ id, name, users, iconColor }) => {
   const router = useRouter();
 
   const enterGroupChat = () => {
@@ -12,7 +12,7 @@ const GroupChat = ({ id, name, users }) => {
 
   return (
     <Container onClick={enterGroupChat}>
-      <UserAvatar sx={{ bgcolor: getRandomColor() }}>{name[0]}</UserAvatar>
+      <UserAvatar sx={{ bgcolor: iconColor }}>{name[0]}</UserAvatar>
       <p>{name}</p>
     </Container>
   );
