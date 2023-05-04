@@ -1,4 +1,5 @@
 import { auth } from "@/firebase";
+import { Avatar } from "@mui/material";
 import moment from "moment/moment";
 import { useAuthState } from "react-firebase-hooks/auth";
 import styled from "styled-components";
@@ -9,6 +10,12 @@ const Message = ({ user, message }) => {
   return (
     <Container>
       <TypeOfMessage>
+        <UserInfomation>
+          <UserImage>
+            <Avatar src={message.photoURL} sx={{ width: 24, height: 24 }} />
+          </UserImage>
+          <UserName>{user}</UserName>
+        </UserInfomation>
         {message.message}
         <Timestamp>
           {message.timestamp ? moment(message.timestamp).format("LT") : "..."}
@@ -51,4 +58,19 @@ const Timestamp = styled.span`
   bottom: 0;
   text-align: right;
   right: 0;
+`;
+
+const UserName = styled.p`
+  color: gray;
+  font-size: 9px;
+`;
+
+const UserInfomation = styled.div`
+  display: flex;
+  align-items: center;
+  margin-bottom: 5px;
+`;
+
+const UserImage = styled.div`
+  padding-right: 5px;
 `;
