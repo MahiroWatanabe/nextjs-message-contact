@@ -26,6 +26,7 @@ const Container = styled.div`
   cursor: pointer;
   padding: 15px;
   word-break: break-all;
+  border-bottom: 1px solid #d6d6d6;
 
   :hover {
     background-color: #e9eaeb;
