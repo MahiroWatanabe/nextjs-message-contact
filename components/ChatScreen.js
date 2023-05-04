@@ -92,7 +92,6 @@ const ChatScreen = ({ chat, messages }) => {
 
   const recipient = recipientSnapshot?.docs?.[0].data();
   const recipientEmail = getRecipientEmail(chat.users, user);
-
   return (
     <Container>
       <Header>
