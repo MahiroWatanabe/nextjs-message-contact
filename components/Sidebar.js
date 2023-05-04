@@ -14,6 +14,7 @@ import { useCollection } from "react-firebase-hooks/firestore";
 import ChatUser from "./Chat";
 import { useState } from "react";
 import GroupChat from "./GroupChat";
+import getRandomColor from "@/utils/getRandomColor";
 
 const Sidebar = () => {
   const [user] = useAuthState(auth);
@@ -57,6 +58,7 @@ const Sidebar = () => {
   const createGroupChat = () => {
     const input = prompt("Please enter email addresses separated by commas");
     const groupname = prompt("Please enter group name");
+    if (!input) return null;
     const inputArray = input.split(",");
     if (!input || !groupname) return null;
     if (
@@ -68,6 +70,7 @@ const Sidebar = () => {
       db.collection("room").add({
         groupname: groupname,
         users: [...inputArray, user.email],
+        iconColor: getRandomColor(),
       });
     } else {
       alert("Please enter valid email addresses.");
@@ -110,6 +113,7 @@ const Sidebar = () => {
               id={chat.id}
               name={chat.data().groupname}
               users={chat.data().users}
+              iconColor={chat.data().iconColor}
             />
           ))}
     </Container>
