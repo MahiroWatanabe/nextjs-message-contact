@@ -7,6 +7,19 @@ import { useEffect } from "react";
 import firebase from "firebase/compat/app";
 import "firebase/compat/firestore";
 import "firebase/compat/auth";
+import ProgressBar from "@badrap/bar-of-progress";
+import { Router } from "next/router";
+
+const progress = new ProgressBar({
+  size: 4,
+  color: "#95ABFF",
+  className: "z-200",
+  delay: 100,
+});
+
+Router.events.on("routeChangeStart", progress.start);
+Router.events.on("routeChangeComplete", progress.finish);
+Router.events.on("routeChangeError", progress.finish);
 
 export default function App({ Component, pageProps }) {
   const [user, loading] = useAuthState(auth);
