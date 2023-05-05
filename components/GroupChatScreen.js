@@ -26,7 +26,7 @@ const GroupChatScreen = ({ chat, messages }) => {
       .orderBy("timestamp", "asc")
   );
   const latestMessage =
-    messagesSnapshot?.docs[messagesSnapshot.docs.length - 1].data();
+    messagesSnapshot?.docs[messagesSnapshot.docs.length - 1]?.data();
 
   const showMessages = () => {
     if (messagesSnapshot) {
