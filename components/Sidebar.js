@@ -6,19 +6,23 @@ import {
   MoreVert,
   GroupAdd,
   Person,
+  Restaurant,
 } from "@mui/icons-material";
 import EmailValidator from "email-validator";
 import { auth, db } from "@/firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useCollection } from "react-firebase-hooks/firestore";
 import ChatUser from "./Chat";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import GroupChat from "./GroupChat";
 import getRandomColor from "@/utils/getRandomColor";
+import BooleanContext from "@/contexts/displayContext";
 
 const Sidebar = () => {
   const [user] = useAuthState(auth);
   const [changemode, setChangemode] = useState(true);
+  const { displayright, toggleBooleanValue } = useContext(BooleanContext);
+  console.log(displayright);
 
   const useChatRef = db
     .collection("chats")
@@ -116,6 +120,11 @@ const Sidebar = () => {
               iconColor={chat.data().iconColor}
             />
           ))}
+      <SubApps>
+        <IconButton className="subapps">
+          <Restaurant onClick={toggleBooleanValue} />
+        </IconButton>
+      </SubApps>
     </Container>
   );
 };
@@ -123,6 +132,7 @@ const Sidebar = () => {
 export default Sidebar;
 
 const Container = styled.div`
+  position: relative;
   flex: 0.45;
   border-right: 1px solid whitesmoke;
   height: 100vh;
@@ -199,3 +209,12 @@ const UserAvatar = styled(Avatar)`
 `;
 
 const IconsContainer = styled.div``;
+
+const SubApps = styled.div`
+  position: absolute;
+  bottom: 0%;
+  width: 100%;
+  height: 25%;
+  background-color: whitesmoke;
+  border: solid 1px #d1d1d1;
+`;
