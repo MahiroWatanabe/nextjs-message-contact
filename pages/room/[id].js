@@ -1,20 +1,23 @@
 import GroupChatScreen from "@/components/GroupChatScreen";
 import Sidebar from "@/components/Sidebar";
+import { BooleanProvider } from "@/contexts/displayContext";
 import { db } from "@/firebase";
 import Head from "next/head";
 import styled from "styled-components";
 
 const RoomChatPage = ({ chat, messages }) => {
   return (
-    <Container>
-      <Head>
-        <title>Group chat {chat.groupname}</title>
-      </Head>
-      <Sidebar />
-      <ChatContainer>
-        <GroupChatScreen chat={chat} messages={messages} />
-      </ChatContainer>
-    </Container>
+    <BooleanProvider>
+      <Container>
+        <Head>
+          <title>Group chat {chat.groupname}</title>
+        </Head>
+        <Sidebar />
+        <ChatContainer>
+          <GroupChatScreen chat={chat} messages={messages} />
+        </ChatContainer>
+      </Container>
+    </BooleanProvider>
   );
 };
 

@@ -5,19 +5,22 @@ import styled from "styled-components";
 import { auth, db } from "@/firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import getRecipientEmail from "@/utils/getRecipientEmail";
+import { BooleanProvider } from "@/contexts/displayContext";
 
 const ChatPage = ({ chat, messages }) => {
   const [user] = useAuthState(auth);
   return (
-    <Container>
-      <Head>
-        <title>Chat with {getRecipientEmail(chat.users, user)}</title>
-      </Head>
-      <Sidebar />
-      <ChatContainer>
-        <ChatScreen chat={chat} messages={messages} />
-      </ChatContainer>
-    </Container>
+    <BooleanProvider>
+      <Container>
+        <Head>
+          <title>Chat with {getRecipientEmail(chat.users, user)}</title>
+        </Head>
+        <Sidebar />
+        <ChatContainer>
+          <ChatScreen chat={chat} messages={messages} />
+        </ChatContainer>
+      </Container>
+    </BooleanProvider>
   );
 };
 
