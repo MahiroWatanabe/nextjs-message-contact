@@ -6,9 +6,11 @@ import { auth, db } from "@/firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import getRecipientEmail from "@/utils/getRecipientEmail";
 import { BooleanProvider } from "@/contexts/displayContext";
+import RightScreen from "@/components/RightScreen";
 
 const ChatPage = ({ chat, messages }) => {
   const [user] = useAuthState(auth);
+
   return (
     <BooleanProvider>
       <Container>
@@ -19,6 +21,9 @@ const ChatPage = ({ chat, messages }) => {
         <ChatContainer>
           <ChatScreen chat={chat} messages={messages} />
         </ChatContainer>
+        <RightSidebar>
+          <RightScreen />
+        </RightSidebar>
       </Container>
     </BooleanProvider>
   );
@@ -72,3 +77,5 @@ const ChatContainer = styled.div`
   -ms-overflow-style: none;
   scrollbar-width: none;
 `;
+
+const RightSidebar = styled.div``;
