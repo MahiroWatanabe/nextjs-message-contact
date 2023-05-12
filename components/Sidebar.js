@@ -22,7 +22,6 @@ const Sidebar = () => {
   const [user] = useAuthState(auth);
   const [changemode, setChangemode] = useState(true);
   const { displayright, toggleBooleanValue } = useContext(BooleanContext);
-  console.log(displayright);
 
   const useChatRef = db
     .collection("chats")
@@ -136,8 +135,8 @@ const Container = styled.div`
   flex: 0.45;
   border-right: 1px solid whitesmoke;
   height: 100vh;
-  min-width: 300px;
-  max-width: 350px;
+  min-width: 250px;
+  max-width: 300px;
   overflow-y: scroll;
 
   ::-webkit-scrollbar {
