@@ -12,8 +12,19 @@ const RightScreen = () => {
   const [restaurants, setRestaurants] = useState([]);
 
   const handleSearch = async (location) => {
-    const results = await getRestaurant(location);
-    setRestaurants(results.businesses);
+    // const results = await getRestaurant(location);
+    // setRestaurants(results.businesses);
+    try {
+      const response = await fetch(`/api/restaurant?location=${location}`);
+      if (response.ok) {
+        const data = await response.json();
+        setRestaurants(data.businesses);
+      } else {
+        console.error("Error:", response.status);
+      }
+    } catch (error) {
+      console.error(error);
+    }
     setLocation("");
   };
 
@@ -23,6 +34,7 @@ const RightScreen = () => {
     displayright && (
       <Container>
         <IconContainer>
+          <h2>Restaurant</h2>
           <CloseIconButton>
             <CloseIcon
               onClick={toggleBooleanValue}
@@ -30,12 +42,13 @@ const RightScreen = () => {
             />
           </CloseIconButton>
         </IconContainer>
+
         <EnterInformation>
           <InputInformation
             type="text"
             value={location}
             onChange={(e) => setLocation(e.target.value)}
-            placeholder="enter location"
+            placeholder="Search location"
           />
           <IconButton
             onClick={() => {
@@ -45,8 +58,9 @@ const RightScreen = () => {
             <Search />
           </IconButton>
         </EnterInformation>
+        <hr style={{ borderColor: "#fafafa" }} />
         <RestaurantInformation>
-          {Object.entries(restaurants).map(([key, restaurant]) => (
+          {Object?.entries(restaurants).map(([key, restaurant]) => (
             <InfoCard key={restaurant.alias} {...restaurant} />
           ))}
         </RestaurantInformation>
@@ -62,11 +76,14 @@ const Container = styled.div`
   max-width: 450px;
   height: 100vh;
   position: relative;
+  overflow-y: scroll;
 `;
 
 const IconContainer = styled.div`
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
+  margin-left: 20px;
+  margin-right: 10px;
 `;
 
 const CloseIconButton = styled(IconButton)`
@@ -89,6 +106,7 @@ const EnterInformation = styled.div`
   border-radius: 9999px;
   padding: 5px 10px;
   margin: 0 auto;
+  margin-bottom: 30px;
 `;
 
 const RestaurantInformation = styled.div`
