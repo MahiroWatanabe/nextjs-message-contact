@@ -1,5 +1,4 @@
-const apiKey =
-  "Ldsee6GjbpxFrAu4qKOwonE34T2S-XXvGBr_m4-k-nRInECuTdwFrif93xWUlw4x56BNXCZRkPcuMjEAzwTO9NzNAxvPIsEHo1E6kytt3-Pf7q3Zf7C9o_K1Z4ZdZHYx";
+const apiKey = process.env.YELP_API_KEY;
 
 const handler = async (req, res) => {
   const { location } = req.query;
