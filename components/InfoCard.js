@@ -23,7 +23,7 @@ const InfoCard = ({
       <InformationContainer>
         <NameContainer>
           <Link href={url} target="_blank">
-            {name}
+            <TitleStyle>{name}</TitleStyle>
           </Link>
         </NameContainer>
         <p style={{ fontSize: 8 }}>
@@ -57,6 +57,7 @@ export default InfoCard;
 const Container = styled.div`
   display: flex;
   align-items: center;
+  justify-content: space-around;
   border-bottom: solid 1px whitesmoke;
   padding: 25px;
   opacity: 1;
@@ -65,6 +66,10 @@ const Container = styled.div`
     scale: 1.05;
     opacity: 90%;
     box-shadow: 0px 10px 10px rgba(0, 0, 0, 0.2);
+  }
+
+  @media (max-width: 768px) {
+    padding: 10px;
   }
 `;
 
@@ -77,6 +82,11 @@ const ImageContainer = styled.div`
   justify-content: center;
   border-radius: 10%;
   overflow: hidden;
+
+  @media (max-width: 768px) {
+    width: 100px !important;
+    height: 100px !important;
+  }
 `;
 
 const StyledImage = styled(Image)`
@@ -91,7 +101,13 @@ const InformationContainer = styled.div`
 
 const NameContainer = styled.h5`
   margin-top: 10px;
-  margin-bottom: 5px;
+  margin-bottom: -5px;
+`;
+
+const TitleStyle = styled.span`
+  :hover {
+    color: purple;
+  }
 `;
 
 const BottomInformation = styled.div`
