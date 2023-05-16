@@ -17,9 +17,11 @@ import { useContext, useState } from "react";
 import GroupChat from "./GroupChat";
 import getRandomColor from "@/utils/getRandomColor";
 import BooleanContext from "@/contexts/displayContext";
+import { useRouter } from "next/router";
 
 const Sidebar = () => {
   const [user] = useAuthState(auth);
+  const router = useRouter();
   const [changemode, setChangemode] = useState(true);
   const { displayright, toggleBooleanValue } = useContext(BooleanContext);
 
@@ -80,6 +82,27 @@ const Sidebar = () => {
     }
   };
 
+  const updatePath = () => {
+    const currentUrl = router.asPath;
+    const urlWithoutQueryParam = currentUrl.split("?")[0];
+    router.push({
+      pathname: urlWithoutQueryParam,
+    });
+  };
+
+  const handleRestaurant = () => {
+    const currentUrl = router.asPath;
+    toggleBooleanValue();
+    {
+      displayright
+        ? updatePath()
+        : router.push({
+            pathname: currentUrl,
+            query: { service: "restaurant" },
+          });
+    }
+  };
+
   return (
     <Container>
       <Header>
@@ -120,8 +143,9 @@ const Sidebar = () => {
             />
           ))}
       <SubApps>
+        <SubAppsTitle>Service</SubAppsTitle>
         <IconButton className="subapps">
-          <Restaurant onClick={toggleBooleanValue} />
+          <Restaurant onClick={() => handleRestaurant()} />
         </IconButton>
       </SubApps>
     </Container>
@@ -216,4 +240,10 @@ const SubApps = styled.div`
   height: 25%;
   background-color: whitesmoke;
   border: solid 1px #d1d1d1;
+  padding-left: 10px;
+`;
+
+const SubAppsTitle = styled.h2`
+  margin-bottom: 5px;
+  text-shadow: 3px 3px 4px rgba(0, 0, 0, 0.3);
 `;
