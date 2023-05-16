@@ -5,8 +5,10 @@ import { Close, Search } from "@mui/icons-material";
 import { IconButton } from "@mui/material";
 import getRestaurant from "@/pages/api/restaurant";
 import InfoCard from "./InfoCard";
+import { useRouter } from "next/router";
 
 const RightScreen = () => {
+  const router = useRouter();
   const [location, setLocation] = useState("");
   const { displayright, toggleBooleanValue } = useContext(BooleanContext);
   const [restaurants, setRestaurants] = useState([]);
@@ -28,17 +30,24 @@ const RightScreen = () => {
     setLocation("");
   };
 
-  console.log(restaurants);
+  const handleClose = () => {
+    const currentUrl = router.asPath;
+    const urlWithoutQueryParam = currentUrl.split("?")[0];
+    toggleBooleanValue();
+    router.push({
+      pathname: urlWithoutQueryParam,
+    });
+  };
 
   return (
     displayright && (
       <Container>
         <IconContainer>
-          <h2>Restaurant</h2>
+          <RestaurantTitle>Restaurant</RestaurantTitle>
           <CloseIconButton>
             <CloseIcon
-              onClick={toggleBooleanValue}
-              style={{ fontSize: "40px" }}
+              onClick={() => handleClose()}
+              style={{ fontSize: "30px" }}
             />
           </CloseIconButton>
         </IconContainer>
@@ -84,6 +93,10 @@ const IconContainer = styled.div`
   justify-content: space-between;
   margin-left: 20px;
   margin-right: 10px;
+`;
+
+const RestaurantTitle = styled.h2`
+  text-shadow: 3px 3px 4px rgba(0, 0, 0, 0.3);
 `;
 
 const CloseIconButton = styled(IconButton)`
