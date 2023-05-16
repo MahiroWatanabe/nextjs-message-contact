@@ -7,6 +7,7 @@ import {
   GroupAdd,
   Person,
   Restaurant,
+  Flight,
 } from "@mui/icons-material";
 import EmailValidator from "email-validator";
 import { auth, db } from "@/firebase";
@@ -24,6 +25,7 @@ const Sidebar = () => {
   const router = useRouter();
   const [changemode, setChangemode] = useState(true);
   const { displayright, toggleBooleanValue } = useContext(BooleanContext);
+  const currentUrl = router.asPath;
 
   const useChatRef = db
     .collection("chats")
@@ -83,7 +85,6 @@ const Sidebar = () => {
   };
 
   const updatePath = () => {
-    const currentUrl = router.asPath;
     const urlWithoutQueryParam = currentUrl.split("?")[0];
     router.push({
       pathname: urlWithoutQueryParam,
@@ -91,7 +92,6 @@ const Sidebar = () => {
   };
 
   const handleRestaurant = () => {
-    const currentUrl = router.asPath;
     toggleBooleanValue();
     {
       displayright
@@ -99,6 +99,18 @@ const Sidebar = () => {
         : router.push({
             pathname: currentUrl,
             query: { service: "restaurant" },
+          });
+    }
+  };
+
+  const handleTrip = () => {
+    toggleBooleanValue();
+    {
+      displayright
+        ? updatePath()
+        : router.push({
+            pathname: currentUrl,
+            query: { service: "trip" },
           });
     }
   };
@@ -146,6 +158,9 @@ const Sidebar = () => {
         <SubAppsTitle>Service</SubAppsTitle>
         <IconButton className="subapps">
           <Restaurant onClick={() => handleRestaurant()} />
+        </IconButton>
+        <IconButton className="subapps">
+          <Flight onClick={() => handleTrip()} />
         </IconButton>
       </SubApps>
     </Container>
