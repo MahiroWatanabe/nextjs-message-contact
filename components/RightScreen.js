@@ -3,6 +3,7 @@ import { useContext } from "react";
 import styled from "styled-components";
 import { useRouter } from "next/router";
 import Restaurant from "./Restaurant";
+import Trip from "./Trip";
 
 const RightScreen = () => {
   const router = useRouter();
@@ -13,7 +14,7 @@ const RightScreen = () => {
     displayright && (
       <>
         {queryParams === "restaurant" && <Restaurant />}
-        {queryParams === "trip" && <h1>hello</h1>}
+        {queryParams === "trip" && <Trip />}
       </>
     )
   );
